@@ -2,9 +2,104 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+    <title>FileUploading</title>
+    <link rel="stylesheet" href="assets/css/bootstrap.css">
 
+    <style>
+        .content{
+            margin: auto;
+            width: 70vw;
+            height: 70vh;
+        }
+
+        .image-load{
+            width: 100%;
+            height: 100%;
+        }
+
+        .btn-img-load{
+            width: 50px;
+            height: 50px;
+        }
+
+
+    </style>
+
+</head>
+<body class="bg-dark">
+<nav class="navbar navbar-light bg-warning">
+    <div class="container">
+        <span class="navbar-brand mb-0 h1">File Upload & Preview System</span>
+    </div>
+</nav>
+<div class="container">
+    <div class="input-group mb-3 mt-5">
+        <div class="input-group-prepend">
+            <span class="input-group-text " id="inputGroupFileAddon01">Upload</span>
+        </div>
+        <div class="custom-file">
+            <input type="file" class="custom-file-input" id="inputGroupFile01" aria-describedby="inputGroupFileAddon01">
+            <label class="custom-file-label" for="inputGroupFile01">Choose file</label>
+        </div>
+        <div class="input-group-append">
+            <button class="btn btn-outline-warning" type="button" id="inputGroupFileAddon04">Upload</button>
+        </div>
+    </div>
+
+    <div class="border-1 border-light content bg-warning mt-2 container row p-5">
+        <div class="bg-light image-load col-6">
+
+        </div>
+        <button class="btn btn-outline-danger col-6 btn-img-load" id="btnPreview" type="button">Preview</button>
+
+    </div>
+
+</div>
+
+<script>
+    let baseUrl = "http://localhost:8080/FileUploadingAndPreviewWithMavenMVC_war/";
+
+    $("#inputGroupFileAddon01").click(function (){
+        var data = new FormData();
+        let file = $("#inputGroupFile01")[0].files[0];
+        let fileName = $("#inputGroupFile01")[0].files[0].name;
+        data.append("myFile", file, fileName);
+
+        $.ajax({
+            url: baseUrl + "upload",
+            method: 'post',
+            async: true,
+            contentType: false,
+            data: data,
+            success: function (rsp){
+                alert("Successfully Uploaded!" +rsp)
+            },
+            error: function (er){
+                alert(er);
+                console.log(er);
+            }
+        })
+    })
+
+    function loadImage() {
+        $.ajax({
+            url: baseUrl + "upload",
+            method: 'get',
+            dataType: 'json',
+            success: function (resp) {
+                $("#display").css({
+                    "background": `url(${baseUrl + resp})`,
+                    "background-size": "cover",
+                    "height": "300px"
+                });
+            }
+        });
+    }
+
+
+</script>
+
+<script src="assets/js/bootstrap.js"></script>
+<script src="assets/js/jquery-3.6.1.min.js"></script>
 </body>
 </html>

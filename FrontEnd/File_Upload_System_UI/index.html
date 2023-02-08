@@ -42,7 +42,7 @@
             <label class="custom-file-label" for="inputGroupFile01">Choose file</label>
         </div>
         <div class="input-group-append">
-            <button class="btn btn-outline-warning" type="button" id="btnUpload">Upload</button>
+            <button class="btn btn-outline-warning" type="button" id="inputGroupFileAddon03">Upload</button>
         </div>
     </div>
 
@@ -56,25 +56,29 @@
 
 </div>
 
-<script src="assets/js/bootstrap.js"></script>
 <script src="assets/js/jquery-3.6.1.min.js"></script>
+<script src="assets/js/bootstrap.js"></script>
 
 <script>
 
-    let baseUrl = "http://localhost:8080/FileUploadingAndPreviewWithMavenMVC_war/";
+    let baseUrl = "http://localhost:8080/Spring_File_Upload_System_war/";
 
-    $("#btnUpload").click(function (){
+    loadImage();
+
+    $("#inputGroupFileAddon03").click(function (){
         var data = new FormData();
         let file = $("#inputGroupFile01")[0].files[0];
         let fileName = $("#inputGroupFile01")[0].files[0].name;
         data.append("myFile", file, fileName);
++
+
 
         $.ajax({
             url: baseUrl + "upload",
             method: 'post',
             async: true,
             contentType: false,
-            data: data,
+            data: file,
             success: function (rsp){
                 alert("Successfully Uploaded!" +rsp);
                 loadImage();
@@ -97,7 +101,7 @@
                     "background-size": "cover",
                     "height": "300px"
                 });
-            }
+            },
             error: function (er){
                 alert(er);
                 console.log(er);

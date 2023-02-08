@@ -42,12 +42,12 @@
             <label class="custom-file-label" for="inputGroupFile01">Choose file</label>
         </div>
         <div class="input-group-append">
-            <button class="btn btn-outline-warning" type="button" id="inputGroupFileAddon04">Upload</button>
+            <button class="btn btn-outline-warning" type="button" id="btnUpload">Upload</button>
         </div>
     </div>
 
     <div class="border-1 border-light content bg-warning mt-2 container row p-5">
-        <div class="bg-light image-load col-6">
+        <div class="border border-1 image-load col-6, w-100" id="display">
 
         </div>
         <button class="btn btn-outline-danger col-6 btn-img-load" id="btnPreview" type="button">Preview</button>
@@ -56,10 +56,14 @@
 
 </div>
 
+<script src="assets/js/bootstrap.js"></script>
+<script src="assets/js/jquery-3.6.1.min.js"></script>
+
 <script>
+    
     let baseUrl = "http://localhost:8080/FileUploadingAndPreviewWithMavenMVC_war/";
 
-    $("#inputGroupFileAddon01").click(function (){
+    $("#btnUpload").click(function (){
         var data = new FormData();
         let file = $("#inputGroupFile01")[0].files[0];
         let fileName = $("#inputGroupFile01")[0].files[0].name;
@@ -72,34 +76,40 @@
             contentType: false,
             data: data,
             success: function (rsp){
-                alert("Successfully Uploaded!" +rsp)
+                alert("Successfully Uploaded!" +rsp);
+                loadImage();
             },
             error: function (er){
                 alert(er);
                 console.log(er);
             }
-        })
-    })
+        });
+    });
 
     function loadImage() {
         $.ajax({
             url: baseUrl + "upload",
             method: 'get',
             dataType: 'json',
-            success: function (resp) {
+            success: function (rsp) {
                 $("#display").css({
-                    "background": `url(${baseUrl + resp})`,
+                    "background": `url(${baseUrl + rsp})`,
                     "background-size": "cover",
                     "height": "300px"
                 });
             }
+            error: function (er){
+                alert(er);
+                console.log(er);
+            }
         });
     }
 
+    $("#btnPreview").click(function (){
+        loadImage();
+    })
+
 
 </script>
-
-<script src="assets/js/bootstrap.js"></script>
-<script src="assets/js/jquery-3.6.1.min.js"></script>
 </body>
 </html>
